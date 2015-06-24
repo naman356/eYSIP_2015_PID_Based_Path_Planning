@@ -335,9 +335,9 @@ signed int PID(signed int position)
 void SetTunings()
 {
 	
-	lcd_print(1,1,10*Kp,2);
+	/*lcd_print(1,1,10*Kp,2);
 	lcd_print(1,4,10*Ki,2);
-	lcd_print(1,7,10*Kd,2);
+	lcd_print(1,7,10*Kd,2);*/
 }
 
 /*
@@ -398,7 +398,7 @@ int main()
 		
 		value_on_line = weight/senser_value_sum ;
 		
-		lcd_print(1, 14,500-value_on_line, 3);
+		//lcd_print(1, 14,500-value_on_line, 3);
 		
 		/*lcd_print(1, 1,sensor_value[0], 1);
 		lcd_print(1, 3,sensor_value[1], 1);
@@ -432,50 +432,50 @@ int main()
 			{
 				forward();
 				velocity(speed_L,speed_R);
-				lcd_print(2,1,speed_L,3);
-				lcd_print(2,5,speed_R,3);
-				lcd_print(2,10,2000-pid, 4);
+				//lcd_print(2,1,speed_L,3);
+				//lcd_print(2,5,speed_R,3);
+				//lcd_print(2,10,2000-pid, 4);
 			}
 			
 			if(pid<0)
 			{
-				//if(pid > -80)
+				if(pid > -120)
 				{
 					forward();
 					velocity(speed_L+pid,speed_R);
-					lcd_print(2,1,speed_L+pid,3);
-					lcd_print(2,5,speed_R,3);
-					lcd_print(2,10,2000-pid, 4);
+					//lcd_print(2,1,speed_L+pid,3);
+					//lcd_print(2,5,speed_R,3);
+					//lcd_print(2,10,2000-pid, 4);
 				}
-				/*else
+				else
 				{
 					left();
 					velocity(speed_L+pid,speed_R);
-					lcd_print(2,1,speed_L+pid,3);
+					/*lcd_print(2,1,speed_L+pid,3);
 					lcd_print(2,5,speed_R,3);
-					lcd_print(2,10,2000-pid, 4);
-				}*/
+					lcd_print(2,10,2000-pid, 4);*/
+				}
 				
 			}
 			
 			if (pid>0)
 			{
-				//if(pid<80)
+				if(pid<120)
 				{
 					forward();
 					velocity(speed_L,speed_R-pid);
-					lcd_print(2,1,speed_L,3);
+					/*lcd_print(2,1,speed_L,3);
 					lcd_print(2,5,speed_R-pid,3);
-					lcd_print(2,10,2000-pid, 4);
+					lcd_print(2,10,2000-pid, 4);*/
 				}
-				/*else
+				else
 				{
 					right();
 					velocity(speed_L,speed_R-pid);
-					lcd_print(2,1,speed_L,3);
+					/*lcd_print(2,1,speed_L,3);
 					lcd_print(2,5,speed_R-pid,3);
-					lcd_print(2,10,2000-pid, 4);
-				}*/
+					lcd_print(2,10,2000-pid, 4);*/
+				}
 				
 			}
 		}					
