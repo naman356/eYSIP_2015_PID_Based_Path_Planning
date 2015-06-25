@@ -7,12 +7,12 @@ import heapq ##priority queue
 import serial #library function for accessing xbee module
 import math
 
-#ser=serial.Serial(2)
+ser=serial.Serial(2)
 
-grid_line_x = 13
-grid_line_y = 13
+grid_line_x = 10
+grid_line_y = 10
 path_sample = 0
-
+stepper = 0
 grid_map = [ [ 0 for i in range(grid_line_y) ] for j in range(grid_line_x) ]
 
 destination_position = [[0 for x in range(2)] for x in range(2)]
@@ -39,7 +39,7 @@ def destination(hsv):
     destination_position[0][0] = cx
     destination_position[0][1] = cy
 
-    print cx,cy, "destination"
+    #print cx,cy, "destination"
 
             
 ##########################################         
@@ -72,8 +72,8 @@ def bot_position(hsv):
     Bot_position[1][0]=cx2
     Bot_position[1][1]=cy2
 
-    print cx1,cy1, "1"
-    print cx2,cy2, "2"
+    #print cx1,cy1, "1"
+    #print cx2,cy2, "2"
     
 ############################################
 def wall_detection(hsv):
@@ -94,6 +94,60 @@ def wall_detection(hsv):
     cv2.imshow('obstacle',dilation)
     return dilation
 
+##########################
+# converting grid coordinates into pixels
+'''
+* Function Name:	gridtopixel
+* Input:		grid_x: integer which stores grid cell x coordinates
+*                           grid_y: integer which stores grid cell y coordinates
+*                           height: integer, stores height of grid cell
+*                           width: integer, stores width of grid cell
+* Output:		returns grid cell's pixel coordinates
+* Logic:		converts grid cell's centre coordinates into pixel coodinates
+*                       
+* Example Call:	gridtopixel(3,3,30,33)
+*
+'''
+def gridtopixel(grid_x,grid_y,height,width):
+        #accessing centre of grid cell by multiplying grid coordinates with respective height and width and adding their halves
+        pixel_x=grid_x*height+height/2 #pixel_x: stores the integer value of pixel's x coodinate
+        pixel_y=grid_y*width+width/2 #pixel_y: stores the integer value of pixel's y coodinate
+        return pixel_x,pixel_y
+########################
+    
+##############################################
+'''
+* Function Name:	getcoor
+* Input:		pixel_x: integer which stores pixel's x coordinates
+*                           pixel_y: integer which stores pixel's y coordinates
+*                           heigtht: integer, stores height of grid cell
+*                           width: integer, stores width of grid cell
+* Output:		returns grid cell's coordinates
+* Logic:		Converts pixel coordinates into their specific grid coordinates under which those pixels lies.
+*                       
+* Example Call:	getcoor(233,245,30,33)
+*
+'''
+################################################
+def getcoor(x,y):
+        '''
+        cx=x/n#(int)(round(x/m))
+        cy=y/n#(int)(round(y/n))
+        return cx,cy
+        '''
+        #img=cv2.imread(filename) ##getting input image
+        X=0
+        Y=0
+        for i in range(0, grid_line_x): ##drawing lines
+                X=X+line_widthn
+                Y=0
+                for j in range(0, grid_line_y): ##drawing lines
+                        Y=Y+line_widthm
+                        #print X,Y
+                        if x<=X and y<=Y:
+                                return i,j
+                                break
+                            
 ##############################################
     
 def grid_draw(frame,m,n): ##filename is image filename with full file path, n is grid of n lines
@@ -272,36 +326,100 @@ def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,rou
                                ser.write("8") #forward bot
                 return 0
 
+##############################################
+def bot_traverse(route_path,destination,frame):
+    global stepper
+    global current_path_following
+    if stepper!=len(route_path):
+        X,Y=gridtopixel(route_path[stepper].x,route_path[stepper].y,line_widthm,line_widthn)#X,Y are pixels of next grid coor
+        #bot = GridPoint((Bot_position[0][1]/line_widthn),(Bot_position[0][0]/line_widthm)) ##reversing coordinates so that it can be compatible with coordinate system of matrix
+        rear_bot_x,rear_bot_y=getcoor(Bot_position[0][0],Bot_position[0][1])
+        front_bot_x,front_bot_y=getcoor(Bot_position[1][0],Bot_position[1][1])
+
+        d1=dis(Bot_position[0][0],Bot_position[0][1],Y,X)
+        d2=dis(Bot_position[0][0],Bot_position[0][1],Bot_position[1][0],Bot_position[1][1])
+
+        #print "dist",distance
+        #print line_widthm,line_widthn,
+        cv2.circle(frame,(Y,X), 5, (255,100,100), -1)
+        #print "hello123"
+        m1= getslope(Bot_position[0][0],Bot_position[0][1],Y,X)
+        
+        #print "slope m1", m1
+        m2= getslope(Bot_position[0][0],Bot_position[0][1],Bot_position[1][0],Bot_position[1][1])
+
+        print route_path[stepper].x,route_path[stepper].y,"route"
+        print X,Y,"route_pixel"
+        print m1,"next",m2,"bot"
+        print len(route_path),"length"
+        print d1,"bot_to_next",d2,"bot"
+        print rear_bot_x,rear_bot_y,"rear"
+        print front_bot_x,front_bot_y,"front"
+        print route_path,destination
+        #print "slope m2", m2
+        #print "bot",rear_bot_x+1,rear_bot_y+1," next ",route_path[stepper].y+1,route_path[stepper].x+1
+        if orientmove(m1,m2,rear_bot_x+1,rear_bot_y+1,route_path[stepper].y+1,route_path[stepper].x+1,d1,d2)==1: #bot reaches next coor
+            stepper=stepper+1
+            flag=0
+            #print "Bot Coor",rear_bot_x+1,rear_bot_y+1
+            #print stepper
+            ser.write("9")
+    
+    else:
+        #current_path_following=current_path_following+1
+        #print "path no.",current_path_following
+        #stepper=0
+        ser.write("5")
+        ser.write("9")
+        #break
+        
+############################################################
 def follow_path(frame):
 
     global path_sample
     global route_length, route_path_list
+    global grid_start,grid_end
     grid_start = GridPoint((Bot_position[0][1]/line_widthm),(Bot_position[0][0]/line_widthn)) ##reversing coordinates so that it can be compatible with coordinate system of matrix
     grid_end = GridPoint((destination_position[0][1]/line_widthm),(destination_position[0][0]/line_widthn))
-    
-    if (path_sample == 0):
+    route_length, route_path_list = solve(grid_start,grid_end,frame)
+    '''if (path_sample == 0):
         route_length, route_path_list = solve(grid_start,grid_end,frame)
-        path_sample = 2
+        path_sample = 10
         return route_length, route_path_list
         
-    path_sample = path_sample - 1
+    path_sample = path_sample - 1'''
+    
     print route_length, route_path_list
-   
+    #bot_traverse(route_path_list,grid_end,frame)
     #bot_traverse(route_path_list,grid_end,frame)
 
 ####################################################
 if __name__ == "__main__":    
     cap=cv2.VideoCapture(1)
     ret,frame=cap.read()
-    first_frame = cv2.imwrite("first_frame.jpeg",frame)
-    cv2.imshow('first_frame',frame)
+    first_frame = cv2.imwrite("pic_11.jpeg",frame)
+    hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+
+    h,k,l=frame.shape
+    line_widthm=h/(grid_line_x-1)
+    line_widthn=k/(grid_line_y-1)
+
+    bot_position(hsv)
+    destination(hsv)
+                          
+    walls=wall_detection(hsv)
+    grid_map_of_walls(walls,grid_line_x,grid_line_y)
+
+    follow_path(frame)
+    
+    #cv2.imshow('first_frame',frame)
     while(1):
         ## Read the image
         #img = cv2.imread('output_image.jpg')
         ret,frame=cap.read()
         
-        moving_objects = frame - first_frame
-        cv2.imshow('moving',moving_objects)
+        # moving_objects = frame - first_frame
+        # cv2.imshow('moving',moving_objects)
         
         hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
         
@@ -311,9 +429,16 @@ if __name__ == "__main__":
         h,k,l=frame.shape
         line_widthm=h/(grid_line_x-1)
         line_widthn=k/(grid_line_y-1)
-        print h,k,l,"frame size"
+
+        for x in range(0, grid_line_x): ##drawing lines
+            X=x*line_widthm
+            cv2.line(frame,(0,X),(k,X),(0,0,255), 1)#lines is red color, bgr format
+        for y in range(0, grid_line_y): ##drawing lines
+            Y=y*line_widthn
+            cv2.line(frame,(Y,0),(Y,h),(255,0,0), 1)#lines is red color, bgr format
+        # print h,k,l,"frame size"
         
-        walls=wall_detection(hsv)
+        '''walls=wall_detection(hsv)
         grid_map_of_walls(walls,grid_line_x,grid_line_y)
         
         cv2.line(frame,(destination_position[0][0],destination_position[0][1]),(Bot_position[0][0],Bot_position[0][1]),(255,255,0), 6)
@@ -324,12 +449,15 @@ if __name__ == "__main__":
 
         distance_centre2destination = dis(destination_position[0][0],destination_position[0][1],Bot_position[0][0],Bot_position[0][1])
         distance_other2destination = dis(Bot_position[0][0],Bot_position[0][1],Bot_position[1][0],Bot_position[1][1])
-
+        '''
         
-        print bot_slope,"bot",destination_slope,"destination"
-        follow_path(frame)
-        print path_sample,"new"
-        #orientmove(destination_slope,bot_slope,Bot_position[0][0],Bot_position[0][1],destination_position[0][0],destination_position[0][1],distance_centre2destination,distance_other2destination)
+        # print bot_slope,"bot",destination_slope,"destination"
+        # follow_path(frame)
+
+        #bot_traverse(route_path_list,grid_end,frame)
+        
+        # print path_sample,"new"
+        # orientmove(destination_slope,bot_slope,Bot_position[0][0],Bot_position[0][1],destination_position[0][0],destination_position[0][1],distance_centre2destination,distance_other2destination)
         cv2.imshow('frame',frame)
         if cv2.waitKey(100)==27:
             break
