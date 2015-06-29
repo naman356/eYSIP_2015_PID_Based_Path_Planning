@@ -1,0 +1,10 @@
+import math
+import serial
+
+ser.serial(2)
+{
+    data = 234
+    ser.write(234/100)
+    ser.write(234%100/10)
+    ser.write(234%10)
+}

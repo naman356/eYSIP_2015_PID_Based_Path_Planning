@@ -1,4 +1,8 @@
-`       //Included in wHite_Line_follower.c
+/********************************************************************************
+ Written by: e-Yantra Team
+ AVR Studio Version 4.17, Build 666
+ Date: 10-oct-2012
+********************************************************************************/
 
 #define RS 0
 #define RW 1
@@ -11,7 +15,7 @@
 void init_ports();
 void lcd_reset();
 void lcd_init();
-void lcd_wr_command(unsigned char);
+void lcd_wr_command(signed char);
 void lcd_wr_char(char);
 void lcd_line1();
 void lcd_line2();
@@ -91,7 +95,7 @@ void lcd_init()
 
 	 
 //Function to Write Command on LCD
-void lcd_wr_command(unsigned char cmd)
+void lcd_wr_command(signed char cmd)
 {
 	unsigned char temp;
 	temp = cmd;
@@ -172,7 +176,7 @@ void lcd_cursor (char row, char column)
 }
 
 //Function To Print Any input value upto the desired digit on LCD
-void lcd_print (char row, char coloumn, unsigned int value, int digits)
+void lcd_print (char row, char coloumn, signed int value, int digits)
 {
 	unsigned char flag=0;
 	if(row==0||coloumn==0)
@@ -223,4 +227,3 @@ void lcd_print (char row, char coloumn, unsigned int value, int digits)
 }
 
 
-`
