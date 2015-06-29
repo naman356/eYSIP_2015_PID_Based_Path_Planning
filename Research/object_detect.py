@@ -8,7 +8,8 @@ import cv2
 def nothing(x):
     pass
 # Creating a window for later use
-cap=cv2.VideoCapture(0)
+cap=cv2.VideoCapture(1)
+
 cv2.namedWindow('Hsv_Color')
 
 # Starting with 100's to prevent error while masking
