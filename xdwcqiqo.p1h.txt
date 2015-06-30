@@ -1,0 +1,109 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 1 different commit each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# Changes to be committed:
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following.atsln
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following.atsuo
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/11_White_line_following - Copy.c
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/11_White_line_following.c
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/11_White_line_following.cproj
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.d
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.eep
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.elf
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.hex
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.lss
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.map
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/11_White_line_following.o
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/Makefile
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/Debug/makedep.mk
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/lcd.h
+#	new file:   White Line Follower/11_White_line_following/11_White_line_following/timer.h
+#	new file:   White Line Follower/7_sensor_line_follower.c
+#	new file:   White Line Follower/PID.c
+#	new file:   White Line Follower/lcd.h
+#	new file:   White Line Follower/white_Line_follower.c
+#
+# Changes not staged for commit:
+#	deleted:    11_White_line_following/11_White_line_following.atsln
+#	deleted:    11_White_line_following/11_White_line_following.atsuo
+#	deleted:    11_White_line_following/11_White_line_following/11_White_line_following - Copy.c
+#	deleted:    11_White_line_following/11_White_line_following/11_White_line_following.c
+#	deleted:    11_White_line_following/11_White_line_following/11_White_line_following.cproj
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.d
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.eep
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.elf
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.hex
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.lss
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.map
+#	deleted:    11_White_line_following/11_White_line_following/Debug/11_White_line_following.o
+#	deleted:    11_White_line_following/11_White_line_following/Debug/Makefile
+#	deleted:    11_White_line_following/11_White_line_following/Debug/makedep.mk
+#	deleted:    11_White_line_following/11_White_line_following/lcd.h
+#	deleted:    11_White_line_following/11_White_line_following/timer.h
+#	deleted:    7_sensor_line_follower.c
+#	deleted:    PID.c
+#	deleted:    Path_planning_0n_grid.py
+#	deleted:    Sample_PID
+#	deleted:    bot_detect.py
+#	deleted:    bot_localisation.py
+#	deleted:    calc.py
+#	deleted:    calc.pyc
+#	deleted:    exp 2
+#	deleted:    exp 2.py
+#	deleted:    experiment_on_xbee
+#	deleted:    experiment_on_xbee.py
+#	deleted:    lcd.h
+#	deleted:    movements.py
+#	deleted:    movements.pyc
+#	deleted:    object_detect.py
+#	deleted:    path.py
+#	deleted:    path.pyc
+#	deleted:    photos/Thumbs.db
+#	deleted:    photos/fifth.jpeg
+#	deleted:    photos/pic_1.jpeg
+#	deleted:    photos/pic_10.jpeg
+#	deleted:    photos/pic_11.jpeg
+#	deleted:    photos/pic_12.jpeg
+#	deleted:    photos/pic_2.jpeg
+#	deleted:    photos/pic_3.jpeg
+#	deleted:    photos/pic_4.jpeg
+#	deleted:    photos/pic_5.jpeg
+#	deleted:    pic_11.jpeg
+#	deleted:    white_Line_follower.c
+#	deleted:    xbee code/GccApplication6.atsln
+#	deleted:    xbee code/GccApplication6.atsuo
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.d
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.eep
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.elf
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.hex
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.lss
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.map
+#	deleted:    xbee code/GccApplication6/Debug/GccApplication6.o
+#	deleted:    xbee code/GccApplication6/Debug/Makefile
+#	deleted:    xbee code/GccApplication6/Debug/makedep.mk
+#	deleted:    xbee code/GccApplication6/GccApplication6.c
+#	deleted:    xbee code/GccApplication6/GccApplication6.cproj
+#	deleted:    xbee code/GccApplication6/lcd.h
+#	modified:   ../Resources/Guide for PID
+#	deleted:    ../photos/Thumbs.db
+#	deleted:    ../photos/fifth.jpeg
+#	deleted:    ../photos/pic_1.jpeg
+#	deleted:    ../photos/pic_10.jpeg
+#	deleted:    ../photos/pic_11.jpeg
+#	deleted:    ../photos/pic_12.jpeg
+#	deleted:    ../photos/pic_2.jpeg
+#	deleted:    ../photos/pic_3.jpeg
+#	deleted:    ../photos/pic_4.jpeg
+#	deleted:    ../photos/pic_5.jpeg
+#
+# Untracked files:
+#	../Application/7_Sensor_Strip_PID_based_White_Line_Follower/
+#	Image Processing/
+#	../wo5zcmzy.btw.txt
+#
+
