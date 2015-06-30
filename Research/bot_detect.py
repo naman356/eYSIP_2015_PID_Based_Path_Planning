@@ -27,10 +27,10 @@ setpoint = 0
 last_proportional = 0
 integral = 0
 angle = 0
-
+c=0
 Kp = 1
 Ki = 0
-Kd = 1
+Kd = 0
 
 def destination(hsv):
     lower = np.array([140 ,35, 255]) 
@@ -57,8 +57,8 @@ def destination(hsv):
 ##########################################         
 def bot_position(hsv):
     
-    bot_lower = np.array([0,80,255])
-    bot_upper = np.array([30,255,255])
+    bot_lower = np.array([0,50,255])
+    bot_upper = np.array([40,255,255])
     
     #####front end masking and centroid
     mask = cv2.inRange(hsv,bot_lower, bot_upper)
@@ -235,77 +235,6 @@ def grid_map_of_walls(walls,grid_line_x,grid_line_y):
     last_grid_map = grid_map
     #print grid_map
 
-#########################################
-def send_value(value):
-    data1 = value/100
-    data2 = value%100/10
-    data3 = value%10
-    if data1 == 0:
-        ser.write("0")
-    elif data1 == 1:
-        ser.write("1")
-    elif data1 == 2:
-        ser.write("2")
-    elif data1 == 3:
-        ser.write("3")
-    elif data1 == 4:
-        ser.write("4")
-    elif data1 == 5:
-        ser.write("5")
-    elif data1 == 6:
-        ser.write("6")
-    elif data1 == 7:
-        ser.write("7")
-    elif data1 == 8:
-        ser.write("8")
-    #elif data1 == 9:
-    else : 
-        ser.write("9")    
-
-    if data2 == 0:
-        ser.write("0")
-    elif data2 == 1:
-        ser.write("1")
-    elif data2 == 2:
-        ser.write("2")
-    elif data2 == 3:
-        ser.write("3")
-    elif data2 == 4:
-        ser.write("4")
-    elif data2 == 5:
-        ser.write("5")
-    elif data2 == 6:
-        ser.write("6")
-    elif data2 == 7:
-        ser.write("7")
-    elif data2 == 8:
-        ser.write("8")
-    #elif data2 == 9:
-    else :
-        ser.write("9")
-
-    if data3 == 0:
-        ser.write("0")
-    elif data3 == 1:
-        ser.write("1")
-    elif data3 == 2:
-        ser.write("2")
-    elif data3 == 3:
-        ser.write("3")
-    elif data3 == 4:
-        ser.write("4")
-    elif data3 == 5:
-        ser.write("5")
-    elif data3 == 6:
-        ser.write("6")
-    elif data3 == 7:
-        ser.write("7")
-    elif data3 == 8:
-        ser.write("8")
-    #elif data3 == 9:
-    else :
-        ser.write("9")
-
 ############################
 def dis(x1,y1,x2,y2):
         dist=math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))#square root function is called
@@ -400,24 +329,32 @@ def modified_angle(angle):
 def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,route_y,distance_centre2cell,distance_other2cell):
         #print bot_grid_x,bot_grid_y,route_x,route_y
         #print stepper
+        global c
         bot_grid_x, bot_grid_y = grid_to_pixel(bot_grid_x,bot_grid_y,line_widthm,line_widthn)
         route_x,route_y = grid_to_pixel(route_x,route_y,line_widthm,line_widthn)
         
         if bot_grid_x==route_x and bot_grid_y==route_y: #check if bot has reached next coordinate
                 #ser.write("5")
                 print "Hello"
-                ser.write("7")
-                return 1
+                #ser.write("7")
+                ser.write("S")
+                
+                #return 1
         else:
                 
                 if slope_bot2cell*slope_botmarkers!=-1 :
                         theta=math.atan((slope_bot2cell-slope_botmarkers)/(1+slope_bot2cell*slope_botmarkers))
                         angle = int(math.degrees(theta)) # print theta in degree
-                        angle = modified_angle(angle)
+                        #angle = modified_angle(angle)
                         
                         pid_correction = pid_value(angle)
-                        print pid_correction
-                                                
+                        if(pid_correction < -255):
+                            pid_correction = -255
+                        if(pid_correction >255):
+                            pid_correction = 255
+                        c=c+1
+                        print pid_correction,"no. of times",c
+                          
                         if distance_other2cell>distance_centre2cell: #if other marker is farther from the grid cell's centre then move it closer with fast turns
                                  if theta<20: #20 for theta greater than 90 degrees, here theta is in radians
                                        ser.write("A")  #fast right turn
@@ -427,12 +364,14 @@ def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,rou
                                  if(pid_correction == 0):
                                        ser.write("F")
                                  elif(pid_correction < 0):
-                                       pid_correction = (-1)*pid_correction
-                                       #print pid_correction
-                                       send_value(pid_correction)
+                                       pid_correction = 255-(-1)*pid_correction
+                                       print pid_correction,"R",hex(pid_correction)
+                                       ser.write(hex(pid_correction))
                                        ser.write("R")
                                  else:
-                                       send_value(pid_correction)
+                                       pid_correction = 255-pid_correction
+                                       print pid_correction,"L",hex(pid_correction)
+                                       ser.write(hex(pid_correction))
                                        ser.write("L")
                                        #print pid_correction
                                 
@@ -526,7 +465,7 @@ def bot_route(frame):
 if __name__ == "__main__":    
     cap=cv2.VideoCapture(1)
     ret,frame=cap.read()
-    k=20
+    k=100
     global h,k,l
     global line_widthm,line_widthn
     first_frame = cv2.imwrite("pic_11.jpeg",frame)
@@ -582,14 +521,18 @@ if __name__ == "__main__":
 
         distance_centre2destination = dis(destination_position[0][0],destination_position[0][1],Bot_position[0][0],Bot_position[0][1])
         distance_other2destination = dis(destination_position[0][0],destination_position[0][1],Bot_position[1][0],Bot_position[1][1])
+
+        destination_x,destination_y = get_coordinate(destination_position[0][0],destination_position[0][1])
+        rear_bot_x,rear_bot_y=get_coordinate(Bot_position[0][0],Bot_position[0][1])
         
         # print bot_slope,"bot",destination_slope,"destination"
         #bot_route(frame)
 
         #bot_traverse(route_path,grid_end,frame)
+        orientmove(destination_slope,bot_slope,rear_bot_x,rear_bot_y,destination_x,destination_y,distance_centre2destination,distance_other2destination)
         
         # print path_sample,"new"
-        orientmove(destination_slope,bot_slope,Bot_position[0][0],Bot_position[0][1],destination_position[0][0],destination_position[0][1],distance_centre2destination,distance_other2destination)
+        #orientmove(destination_slope,bot_slope,Bot_position[0][0],Bot_position[0][1],destination_position[0][0],destination_position[0][1],distance_centre2destination,distance_other2destination)
         cv2.imshow('frame',frame)
         if cv2.waitKey(100)==27:
             break
