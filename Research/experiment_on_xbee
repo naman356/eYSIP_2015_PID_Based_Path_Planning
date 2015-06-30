@@ -1,9 +1,0 @@
-import numpy as np
-import serial
-import math
-
-ser = serial.Serial(2)
-angle = 40
-while angle>0:
-    ser.write("I")
-    angle = angle-1

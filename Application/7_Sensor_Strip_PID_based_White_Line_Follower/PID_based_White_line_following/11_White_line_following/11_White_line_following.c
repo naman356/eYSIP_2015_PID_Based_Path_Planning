@@ -31,11 +31,9 @@ signed int position,last_proportional,setpoint=0;
 signed int speed_L,speed_R;
 signed int proportional,avg_senser;
 signed int correction,weight,pid;
-signed int k=1,c=0;
-signed int angle,i=0;
-signed int data1 =0, data2=0, data3 =0,value = 0;
-float Kp=4, Ki=0 ,Kd=0 ,integral,derivative;
-
+//signed int k=1;
+//signed int angle;
+float Kp=10, Ki=0.08 ,Kd=20 , integral,derivative;
 
 void spi_pin_config (void)
 {
@@ -71,8 +69,7 @@ void motion_pin_config (void)
 //Function to Initialize PORTS
 void port_init()
 {
-	lcd_port_config();
-		adc_pin_config();
+	lcd_port_config();	adc_pin_config();
 	motion_pin_config();
 	spi_pin_config();	
 }
@@ -202,14 +199,9 @@ void motion_set (unsigned char Direction)
 	PORTA = PortARestore; 		// executing the command
 }
 
-void forward (void) //both wheels forward
+void forward (void) 
 {
-	motion_set(0x06);
-}
-
-void back (void) //both wheels backward
-{
-	motion_set(0x09);
+	motion_set (0x06);
 }
 
 void left (void) //Left wheel backward, Right wheel forward
@@ -222,42 +214,11 @@ void right (void) //Left wheel forward, Right wheel backward
 	motion_set(0x0A);
 }
 
-void fast_left(void)
+void stop (void)
 {
-	motion_set(0x05);
+  motion_set (0x00);
 }
 
-void fast_right(void)
-{
-	
-	motion_set(0x0A);
-}
-
-void soft_left (void) //Left wheel stationary, Right wheel forward
-{
-	motion_set(0x04);
-}
-
-void soft_right (void) //Left wheel forward, Right wheel is stationary
-{
-	motion_set(0x02);
-}
-
-void soft_left_2 (void) //Left wheel backward, right wheel stationary
-{
-	motion_set(0x01);
-}
-
-void soft_right_2 (void) //Left wheel stationary, Right wheel backward
-{
-	motion_set(0x08);
-}
-
-
-void stop (void) //hard stop
-{
-	motion_set(0x00);
-}
 //Function To Initialize UART0
 // desired baud rate:9600
 // actual baud rate:9600 (error 0.0%)
@@ -279,110 +240,35 @@ SIGNAL(SIG_USART0_RECV) 		// ISR for receive complete interrupt
 	data = UDR0; 				//making copy of data from UDR0 in 'data' variable
 
 	UDR0 = data; 				//echo data back to PC
-	//lcd_print(1,1,data,3);
-	
-	lcd_print(1,9,c++,1);
-	if(i==0)
-	{
-		i = i+1;
-		switch(data)
-		{
-			case (48): data1 = 0; break; //lcd_cursor(1,2); lcd_string("0"); lcd_print(2,2,i,1); break;
-			case (49): data1 = 1; break; //lcd_cursor(1,2); lcd_string("1"); lcd_print(2,2,i,1); break;
-			case (50): data1 = 2; break; //lcd_cursor(1,2); lcd_string("2"); lcd_print(2,2,i,1); break;
-			case (51): data1 = 3; break; //lcd_cursor(1,2); lcd_string("3"); lcd_print(2,2,i,1); break;
-			case (52): data1 = 4; break; //lcd_cursor(1,2); lcd_string("4"); lcd_print(2,2,i,1); break;
-			case (53): data1 = 5; break; //lcd_cursor(1,2); lcd_string("5"); lcd_print(2,2,i,1); break;
-			case (54): data1 = 6; break; //lcd_cursor(1,2); lcd_string("6"); lcd_print(2,2,i,1); break;
-			case (55): data1 = 7; break; //lcd_cursor(1,2); lcd_string("7"); lcd_print(2,2,i,1); break;
-			case (56): data1 = 8; break; //lcd_cursor(1,2); lcd_string("8"); lcd_print(2,2,i,1); break;
-			case (57): data1 = 9; break; //lcd_cursor(1,2); lcd_string("9"); lcd_print(2,2,i,1); break;
-		}
-	}
-	else if(i==1)
-	{
-		i = i+1;
-		switch(data)
-		{
-			case (48): data2 = 0; break;//lcd_cursor(1,3); lcd_string("0"); lcd_print(2,3,i,1);  break;
-			case (49): data2 = 1; break;//lcd_cursor(1,3); lcd_string("1"); lcd_print(2,3,i,1);  break;
-			case (50): data2 = 2; break;//lcd_cursor(1,3); lcd_string("2"); lcd_print(2,3,i,1); break;
-			case (51): data2 = 3; break;//lcd_cursor(1,3); lcd_string("3"); lcd_print(2,3,i,1); break;
-			case (52): data2 = 4; break;//lcd_cursor(1,3); lcd_string("4"); lcd_print(2,3,i,1); break;
-			case (53): data2 = 5; break;//lcd_cursor(1,3); lcd_string("5"); lcd_print(2,3,i,1); break;
-			case (54): data2 = 6; break;//lcd_cursor(1,3); lcd_string("6"); lcd_print(2,3,i,1); break;
-			case (55): data2 = 7; break;//lcd_cursor(1,3); lcd_string("7"); lcd_print(2,3,i,1); break;
-			case (56): data2 = 8; break;//lcd_cursor(1,3); lcd_string("8"); lcd_print(2,3,i,1); break;
-			case (57): data2 = 9; break;//lcd_cursor(1,3); lcd_string("9"); lcd_print(2,3,i,1); break;
-			
-		}
-	}
-	else if (i==2)
-	{
-		i = i+1;
-		switch(data)
-		{
-			case (48): data3 = 0; break;//lcd_cursor(1,4); lcd_string("0"); lcd_print(2,4,i,1); break;
-			case (49): data3 = 1; break;//lcd_cursor(1,4); lcd_string("1"); lcd_print(2,4,i,1); break;
-			case (50): data3 = 2; break;//lcd_cursor(1,4); lcd_string("2"); lcd_print(2,4,i,1); break;
-			case (51): data3 = 3; break;//lcd_cursor(1,4); lcd_string("3"); lcd_print(2,4,i,1); break;
-			case (52): data3 = 4; break;//lcd_cursor(1,4); lcd_string("4"); lcd_print(2,4,i,1); break;
-			case (53): data3 = 5; break;//lcd_cursor(1,4); lcd_string("5"); lcd_print(2,4,i,1); break;
-			case (54): data3 = 6; break;//lcd_cursor(1,4); lcd_string("6"); lcd_print(2,4,i,1); break;
-			case (55): data3 = 7; break;//lcd_cursor(1,4); lcd_string("7"); lcd_print(2,4,i,1); break;
-			case (56): data3 = 8; break;//lcd_cursor(1,4); lcd_string("8"); lcd_print(2,4,i,1); break;
-			case (57): data3 = 9; break;//lcd_cursor(1,4); lcd_string("9"); lcd_print(2,4,i,1); break;
-			
-		}
-	}
-	else
-	{
-		i=0;
-		value = data1*100 + data2*10 + data3;
-		lcd_print(1,1,data1,1);
-		lcd_print(1,3,data2,1);
-		lcd_print(1,5,data3,1);
 		
-	}	
-	lcd_print(2,1,value,3);
-	if(data == 0x46) //ASCII value of F
+	if(data == 0x50) //ASCII value of P
 	{
-		forward();  //forward
-		velocity(255,255);
+		Kp=Kp+0.1;
 	}
-	if(data == 0x66) //ASCII value of f
+
+	if(data == 0x70) //ASCII value of p
 	{
-		back();
-		velocity(255,255);
+		Kp=Kp-0.1;
 	}
-	
-	if(data == 0x52) //ASCII value of R
+
+	if(data == 0x49) //ASCII value of I
 	{
-		forward();  //forward
-		velocity(250,250 - value);
-		//lcd_print(2,5,250-value,3);
+		Ki=Ki+0.01;
 	}
-	if(data == 0x4C) //ASCII value of L
+
+	if(data == 0x69) //ASCII value of i
 	{
-		forward();  //forward
-		velocity(250 - value,250);
-		//lcd_print(2,1,250-value,3);
+		Ki=Ki-0.01;
 	}
-	if (data == 0x41) // ASCII value of A
+
+	if(data == 0x44) //ASCII value of D
 	{
-		fast_left();
-		velocity(255,255);
+		Kd=Kd+0.1;
 	}
-	
-	if (data == 0x44)// ASCII value of D
+
+	if(data == 0x64) //ASCII value of d
 	{
-		fast_right();
-		velocity(255,255);
-	}
-	
-	if(data == 0x53) //ASCII value of S
-	{
-		PORTA=0x00; //stop
+		Kd=Kd-0.1;
 	}
 }
 
@@ -401,6 +287,27 @@ void init_devices (void)
 	sei();   //Enables the global interrupts
 }
 /*
+  //Function Name -  sensor_on_line
+  //Input - sensor raw values
+  //Output - 0 or 1
+  //Logic - compare with threshold value of white line if it is online then return 1 else 0
+*/
+sensor_on_line(int sensor)
+{
+	/*reading = sensor/10;
+	reading = 10*reading;
+	return 	reading;*/
+	if(sensor < 30)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}		 
+}
+
+/*
   //Function Name -  PID
   //Input - error corresponding to sensor which is on line
   //Output - correction value which will be added in left and right motor speed
@@ -412,19 +319,21 @@ signed int PID(signed int position)
 	proportional = position - setpoint; // The "proportional" term should be 0 when we are on the white line.
 	
 	integral += proportional;  // Compute the integral (sum) of the position using proportional error.
-	if (integral < -200 )
+	
+	/*if (integral < -200 )
 	{
 		integral = -200 ;
 	}
 	if (integral > 200)
 	{
 		integral = 200 ;
-	}
+	}*/
+	
 	derivative = (proportional - last_proportional); //compute derivative using past and present proportional value.
 		
-	//lcd_print(1,10,500-proportional,3);
-	//lcd_print(2,9,500-integral,3);
-	//lcd_print(2,14,500-derivative,3);
+	/*lcd_print(1,10,500-proportional,3);
+	lcd_print(2,9,500-integral,3);
+	lcd_print(2,14,500-derivative,3);*/
 	
 	last_proportional = proportional; // Remember the last position.	
 	correction = proportional*Kp + integral*Ki + derivative*Kd ;
@@ -457,8 +366,158 @@ int main()
 	init_devices();
 	lcd_set_4bit();
 	lcd_init();
+	signed int max = 250; 
+	speed_L = 255;
+	speed_R = 255;
+	
+	while(1)
+	{
+
+		data_received [0] = ADC_Conversion(3);	//Getting data of sensor-0 WL Sensor
+		data_received [1] = ADC_Conversion(2);	//Getting data of sensor-1 WL Sensor
+		data_received [2] = ADC_Conversion(1);	//Getting data of sensor-2 WL Sensor
+        data_received [3] = spi_master_tx_and_rx(0); //Getting data of sensor-3 WL sensor connected to slave microcontroller.
+        data_received [4] = spi_master_tx_and_rx(1); //Getting data of sensor-4 WL sensor connected to slave microcontroller.
+        data_received [5] = spi_master_tx_and_rx(2); //Getting data of sensor-5 WL sensor connected to slave microcontroller.
+		data_received [6] = spi_master_tx_and_rx(3); //Getting data of sensor-6 WL sensor connected to slave microcontroller.
 		
-	while(1);			
+		/*lcd_print(1, 1,data_received [0], 3);
+		lcd_print(1, 5,data_received [1], 3);
+		lcd_print(1, 9,data_received [2], 3);
+		lcd_print(1, 14,data_received [3], 3);
+		lcd_print(2, 1,data_received [4], 3);
+		lcd_print(2, 5,data_received [5], 3);
+		lcd_print(2, 9,data_received [6], 3);
+		*/
+		SetTunings();
+		
+		sensor_value[0] = sensor_on_line(data_received [0]);
+		sensor_value[1] = sensor_on_line(data_received [1]);
+		sensor_value[2] = sensor_on_line(data_received [2]);
+		sensor_value[3] = sensor_on_line(data_received [3]);
+		sensor_value[4] = sensor_on_line(data_received [4]);
+		sensor_value[5] = sensor_on_line(data_received [5]);
+		sensor_value[6] = sensor_on_line(data_received [6]);
+		
+		
+		/*senser_value_sum = data_received [0] + data_received [1] + data_received [2] + data_received [3] + data_received [4] + data_received [5] + data_received [6] ;
+		
+		weight = ((-3)*data_received [0] + (-2)*data_received [1] + (-1)*data_received [2] + (0)*data_received [3] + (1)*data_received [4] + (2)*data_received [5] + (3)*data_received [6]);
+		*/
+		
+		senser_value_sum = sensor_value[0] + sensor_value[1] + sensor_value[2] + sensor_value[3] + sensor_value[4] + sensor_value[5] + sensor_value[6] ;
+		
+		weight = 10*((-3)*sensor_value[0] + (-2)*sensor_value[1]+ (-1)*sensor_value[2] + (0)*sensor_value[3] + (1)*sensor_value[4] + (2)*sensor_value[5] + (3)*sensor_value[6]);
+		
+		//control variable
+		
+		value_on_line = weight/senser_value_sum ;
+		
+		//lcd_print(1, 3,100-value_on_line, 3);
+		
+		/*lcd_print(2, 10,sensor_value[0], 1);
+		lcd_print(2, 11,sensor_value[1], 1);
+		lcd_print(2, 12,sensor_value[2], 1);
+		lcd_print(2, 13,sensor_value[3], 1);
+		lcd_print(2, 14,sensor_value[4], 1);
+		lcd_print(2, 15,sensor_value[5], 1);
+		lcd_print(2, 16,sensor_value[6], 1);
+		*/
+		
+		
+		pid = PID(value_on_line);
+		
+		//pid = PID(weight); 
+		 
+		if (pid <= -max)
+		{
+			pid = -max ;
+		}
+		
+		if (pid >= max)
+		{
+			pid = max;
+		}
+		
+		if (senser_value_sum == 0)
+		{
+			stop();
+		}
+		else
+		{
+			if (pid == 0)
+			{
+				//integral = 0;
+				forward();
+				velocity(speed_L,speed_R);
+				/*lcd_print(2,1,speed_L,3);
+				lcd_print(2,5,speed_R,3);
+				lcd_print(1,13,2000-pid, 4);*/
+			}
+			
+			if(pid<0)
+			{
+				if(pid > -180)
+				{
+					forward();
+					velocity(speed_L+pid,speed_R);
+					/*lcd_print(2,1,speed_L+pid,3);
+					lcd_print(2,5,speed_R,3);
+					lcd_print(1,13,2000-pid, 4);*/
+				}
+				else
+				{
+					/*while(k)
+					{
+						data_received [1] = ADC_Conversion(2);
+						lcd_print(1,14,data_received [1], 3);
+						if(data_received [1] < 50)
+						{
+							k=0;
+						}*/
+						left();
+						velocity(speed_L-50,speed_R-50);
+						/*lcd_print(2,1,speed_L-50,3);
+						lcd_print(2,5,speed_R-50,3);
+						lcd_cursor(1,13);
+						lcd_string("l")	;
+					}*/
+				
+				}
+							
+			}
+			
+			if (pid>0)
+			{
+				if(pid<180)
+				{
+					forward();
+					velocity(speed_L,speed_R-pid);
+					/*lcd_print(2,1,speed_L,3);
+					lcd_print(2,5,speed_R-pid,3);
+					lcd_print(1,13,2000-pid, 4);*/
+				}
+				else
+				{
+					/*while(k)
+					{
+						data_received [5] = spi_master_tx_and_rx(2);
+						lcd_print(1,14,data_received[5], 3);
+						if(data_received [5]<50)
+						{
+							k=0;
+						}*/
+						right();
+						velocity(speed_L-50 , speed_R-50);
+						/*lcd_print(2,1,speed_L-50,3);
+						lcd_print(2,5,speed_R-50,3);
+						lcd_cursor(1,13);
+						lcd_string("r")	;					
+					}*/
+				}			
+			}
+		}					
+	}
 }
 						
 				

@@ -1,0 +1,63 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	deleted:    ../Application/7_Sensor_Strip_PID_based_White_Line_Follower/white_Line_follower.c
+#	new file:   11_White_line_following/11_White_line_following.atsln
+#	new file:   11_White_line_following/11_White_line_following.atsuo
+#	renamed:    ../Application/7_Sensor_Strip_PID_based_White_Line_Follower/7_sensor_line_follower.c -> 11_White_line_following/11_White_line_following/11_White_line_following - Copy.c
+#	new file:   11_White_line_following/11_White_line_following/11_White_line_following.c
+#	new file:   11_White_line_following/11_White_line_following/11_White_line_following.cproj
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.d
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.eep
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.elf
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.hex
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.lss
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.map
+#	new file:   11_White_line_following/11_White_line_following/Debug/11_White_line_following.o
+#	new file:   11_White_line_following/11_White_line_following/Debug/Makefile
+#	new file:   11_White_line_following/11_White_line_following/Debug/makedep.mk
+#	renamed:    ../Application/7_Sensor_Strip_PID_based_White_Line_Follower/lcd.h -> 11_White_line_following/11_White_line_following/lcd.h
+#	new file:   11_White_line_following/11_White_line_following/timer.h
+#	new file:   calc.pyc
+#	new file:   exp 2
+#	new file:   exp 2.py
+#	new file:   experiment_on_xbee
+#	new file:   experiment_on_xbee.py
+#	new file:   movements.py
+#	new file:   movements.pyc
+#	new file:   path.py
+#	new file:   path.pyc
+#	new file:   pic_11.jpeg
+#	new file:   xbee code/GccApplication6.atsln
+#	new file:   xbee code/GccApplication6.atsuo
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.d
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.eep
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.elf
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.hex
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.lss
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.map
+#	new file:   xbee code/GccApplication6/Debug/GccApplication6.o
+#	new file:   xbee code/GccApplication6/Debug/Makefile
+#	new file:   xbee code/GccApplication6/Debug/makedep.mk
+#	new file:   xbee code/GccApplication6/GccApplication6.c
+#	new file:   xbee code/GccApplication6/GccApplication6.cproj
+#	new file:   xbee code/GccApplication6/lcd.h
+#	new file:   ../photos/Thumbs.db
+#	new file:   ../photos/fifth.jpeg
+#	new file:   ../photos/pic_1.jpeg
+#	new file:   ../photos/pic_10.jpeg
+#	new file:   ../photos/pic_11.jpeg
+#	new file:   ../photos/pic_12.jpeg
+#	new file:   ../photos/pic_2.jpeg
+#	new file:   ../photos/pic_3.jpeg
+#	new file:   ../photos/pic_4.jpeg
+#	new file:   ../photos/pic_5.jpeg
+#
+# Untracked files:
+#	../Application/7_Sensor_Strip_PID_based_White_Line_Follower/
+#
+
