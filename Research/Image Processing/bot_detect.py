@@ -13,10 +13,10 @@ import thread
 
 ser=serial.Serial(2)
 
-grid_line_x = 18
-grid_line_y = 18
+grid_line_x = 21
+grid_line_y = 21
 path_sample = 0
-stepper = 1
+stepper = 0
 grid_map = [ [ 0 for i in range(grid_line_y) ] for j in range(grid_line_x) ]
 
 destination_position = [[0 for x in range(2)] for x in range(2)]
@@ -31,23 +31,27 @@ last_proportional = 0
 integral = 0
 angle = 0
 c=0
-Kp = 4
-Ki = 0.08
-Kd = 10   
+Kp = 5
+Ki = 0.05
+Kd = 5   
 
 def destination(hsv,c):
     if(c==1):
-        lower = np.array([145,25,248]) # for image
-        upper = np.array([155,255,255])
+        lower = np.array([130,40,248]) # for image
+        upper = np.array([179,255,255])
+
+     #   lower = np.array([130,50,248]) # for image
+     #   upper = np.array([179,255,255])
+
     else:    
-        lower = np.array([145 ,80, 255]) 
+        lower = np.array([80 ,60, 250]) 
         upper = np.array([179, 255, 255])
     
     mask = cv2.inRange(hsv,lower, upper)
     contours, hierarchy = cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     contours=sorted(contours, key = cv2.contourArea, reverse = True)[:1] ##obstacles
-    #cv2.drawContours(frame,contours,-1,(0,0,255),7)
-
+    cv2.drawContours(frame,contours,-1,(0,0,255),7)
+    
     M = cv2.moments(contours[0])
     cx = int(M['m10']/M['m00'])
     cy = int(M['m01']/M['m00'])
@@ -61,10 +65,13 @@ def destination(hsv,c):
 def bot_position(hsv,c):
 
     if(c==1):
-        bot_lower = np.array([20,25,160]) # for image 
+        # bot_lower = np.array([20,25,230]) # for image 
+        # bot_upper = np.array([40,255,255])
+
+        bot_lower = np.array([20,25,230]) # for image 
         bot_upper = np.array([40,255,255])
     else:
-        bot_lower = np.array([0,70,220])
+        bot_lower = np.array([0,70,240])
         bot_upper = np.array([45,255,255])
 
     #####front end masking and centroid
@@ -92,8 +99,12 @@ def bot_position(hsv,c):
 ############################################
 def wall_detection(hsv,c):
     if c==1 :
-        lower = np.array([60 ,50, 250],np.uint8)   # for image
-        upper = np.array([145, 160, 255],np.uint8)
+        lower = np.array([45 ,30, 170],np.uint8)   # for image
+        upper = np.array([110, 170, 255],np.uint8)
+
+        # lower = np.array([45 ,30, 170],np.uint8)   # for image
+        # upper = np.array([110, 170, 255],np.uint8)
+
     else :
         lower = np.array([45 ,75, 30],np.uint8)
         upper = np.array([90, 255, 255],np.uint8)
@@ -105,7 +116,7 @@ def wall_detection(hsv,c):
 
     cv2.fillPoly(mask,contours, (255,255,255))
 
-    kernel = np.ones((50,50),np.uint8)
+    kernel = np.ones((40,40),np.uint8)
     closing = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
     erosion = cv2.erode(mask,kernel,iterations = 1)
     dilation = cv2.dilate(closing,kernel,iterations = 1)#obstacle = cv2.dilate(closing,kernel,iterations = 1)
@@ -212,11 +223,11 @@ class GridPoint(object):
             '''if self.x + 1<len(grid_map) and self.y + 1<len(grid_map):
                 yield GridPoint(self.x+1, self.y+1)
             if self.y + 1<len(grid_map) and  self.x - 1>-1:  
-                yield GridPoint(self.x-1, self.y + 1)  '''  
+                yield GridPoint(self.x-1, self.y + 1)    
             if self.x - 1>-1 and self.y - 1>-1:
                 yield GridPoint(self.x-1, self.y-1)
             if self.y - 1>-1 and self.x + 1<len(grid_map):
-                yield GridPoint(self.x+1, self.y - 1)
+                yield GridPoint(self.x+1, self.y - 1)'''
 
 #############################################################
 def grid_map_of_walls(walls,grid_line_x,grid_line_y):
@@ -336,23 +347,30 @@ def modified_angle(angle):
         return angle
     
 ############################    
-def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,route_y,distance_centre2cell,distance_other2cell):
+def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,route_y,distance_centre2cell,distance_other2cell,bot_distance):
 
         global c
         global start,stop
         
         # bot_grid_x, bot_grid_y = grid_to_pixel(bot_grid_x,bot_grid_y,line_widthm,line_widthn)
         # route_x,route_y = grid_to_pixel(route_x,route_y,line_widthm,line_widthn)
-        print len(route_path)
-        #if bot_grid_x==route_x and bot_grid_y==route_y: #check if bot has reached next coordinate
-        if len(route_path) == 1:   
-                ser.write("5")
+        
+        if bot_grid_x==route_x and bot_grid_y==route_y: #check if bot has reached next coordinate
+        #if distance_other2cell < 33 :
+                #ser.write("\xfd")
+                #print "reached"
                 return 1
         else:
                 
                 if slope_bot2cell*slope_botmarkers!=-1 :
                         theta=math.atan((slope_bot2cell-slope_botmarkers)/(1+slope_bot2cell*slope_botmarkers))
                         angle = int(math.degrees(theta)) # print theta in degree
+
+                        if pow(distance_other2cell,2) > pow(distance_centre2cell,2) + pow(bot_distance,2): #if other marker is farther from the grid cell's centre then move it closer with fast turns
+                                 if angle < 0 :
+                                     angle = 180 + angle
+                                 else :
+                                     angle = -180 + angle
                         pid_correction = int(pid_value(angle))
                         
                         if(pid_correction < -255):
@@ -360,37 +378,41 @@ def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,rou
                         if(pid_correction >255):
                             pid_correction = 255
 
-                        print pid_correction,"correction"
-                            
-                        if distance_other2cell>distance_centre2cell: #if other marker is farther from the grid cell's centre then move it closer with fast turns
-                                 if(pid_correction < 0):
-                                       ser.write(chr(0))
-                                       ser.write("\xfe")
-                                 else:
-                                       ser.write(chr(0))
-                                       ser.write("\xff")
+                        '''if distance_other2cell == 0: #if other marker is farther from the grid cell's centre then move it closer with fast turns
+                                 if(pid_correction > 0 and pid_correction < 255):
+                                       #ser.write(chr(0))
+                                       ser.write("\xfb") # right
+                                       print "Opp right",pid_correction
+                                 if(pid_correction < 0 and pid_correction > -255):
+                                       #ser.write(chr(0))
+                                       ser.write("\xfc") # left
+                                       print "Opp left",pid_correction'''
                                  
-                        else:
+                        if 1 == 1:
                                  if(pid_correction > -5 and pid_correction < 5):
                                        ser.write("\xf8")
                                  elif(pid_correction < -5):
-                                       if pid_correction > -200:
+                                       if pid_correction > -250:
                                            pid_correction = 255 + pid_correction
                                            pid_correction = pid_correction/2+pid_correction%2
                                            ser.write(chr(pid_correction))
-                                           ser.write("\xff")
+                                           ser.write("\xff")  # slow right
+                                           
                                        else :
                                            ser.write(chr(0))
-                                           ser.write("\xfb")
+                                           ser.write("\xfb")  # right
+                                           
                                  else:
-                                       if pid_correction < 200 :
+                                       if pid_correction < 250 :
                                            pid_correction = 255-pid_correction
                                            pid_correction = pid_correction/2+pid_correction%2
                                            ser.write(chr(pid_correction))
-                                           ser.write("\xfe")
+                                           ser.write("\xfe")  # slow left
+                                           
                                        else :
                                            ser.write(chr(0))
-                                           ser.write("\xfc")
+                                           ser.write("\xfc")  # left
+                                           
                 else:
                         return 0
 
@@ -398,7 +420,7 @@ def orientmove(slope_bot2cell,slope_botmarkers,bot_grid_x,bot_grid_y,route_x,rou
 def bot_traverse(route_path,destination,frame):
     global stepper
     
-    if stepper==1:#<=len(route_path)-1
+    if stepper<len(route_path)-1:
         X,Y=grid_to_pixel(route_path[stepper].x,route_path[stepper].y,line_widthm,line_widthn)# X,Y are pixels of next grid coor
 
         rear_bot_x,rear_bot_y=get_coordinate(Bot_position[0][0],Bot_position[0][1])
@@ -406,9 +428,13 @@ def bot_traverse(route_path,destination,frame):
 
         d1 = dis(Bot_position[0][0],Bot_position[0][1],Y,X)
         d2 = dis(Bot_position[1][0],Bot_position[1][1],Y,X)
+        d3 = dis(Bot_position[0][0],Bot_position[0][1],Bot_position[1][0],Bot_position[1][1])
 
-        mid_x=(Bot_position[0][0]+Bot_position[1][0])/2 # mid point of bot center and other point
-        mid_y=(Bot_position[0][1]+Bot_position[1][1])/2 # mid point of bot center and other point
+        #d1 = dis(destination_position[0][0],destination_position[0][1],Bot_position[0][0],Bot_position[0][1])
+        #d2 = dis(destination_position[0][0],destination_position[0][1],Bot_position[1][0],Bot_position[1][1])
+
+        mid_x=(Bot_position[0][0]+Bot_position[1][0])/2#mid point of bot center and other point
+        mid_y=(Bot_position[0][1]+Bot_position[1][1])/2#mid point of bot center and other point
 
         bot_grid_x,bot_grid_y=get_coordinate(mid_x,mid_y)
         
@@ -417,7 +443,7 @@ def bot_traverse(route_path,destination,frame):
         m1= getslope(Bot_position[0][0],Bot_position[0][1],Y,X)
         m2= getslope(Bot_position[0][0],Bot_position[0][1],Bot_position[1][0],Bot_position[1][1])
 
-        if orientmove(m1,m2,mid_x+1,mid_y+1,route_path[stepper].y+1,route_path[stepper].x+1,d1,d2)==1: #bot reaches next coor
+        if orientmove(m1,m2,rear_bot_x+1,rear_bot_y+1,route_path[stepper].y+1,route_path[stepper].x+1,d1,d2,d3)==1: #bot reaches next coor
             stepper=stepper+1
             
     else:
@@ -451,7 +477,7 @@ def route_sample(frame):
     while(1):
         bot_route(frame)
         time.sleep(5)
-     
+        
 ####################################################
 if __name__ == "__main__":
     global h,k,l
@@ -464,22 +490,24 @@ if __name__ == "__main__":
         k= k-1
 
     hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
-    cv2.imwrite('frame.jpeg',frame)
+    cv2.imwrite('frame3.jpeg',frame)
     
     h,k,l=frame.shape
     line_widthm=h/(grid_line_x-1)
     line_widthn=k/(grid_line_y-1)
 
     destination(hsv,1)
-    bot_position(hsv,1)
+    bot_position(hsv,0)
                           
-    walls=wall_detection(hsv,1)
+    walls=wall_detection(hsv,0)
     grid_map_of_walls(walls,grid_line_x,grid_line_y)
 
-    thread.start_new_thread(route_sample,(hsv, ))
+    destination_x,destination_y = get_coordinate(destination_position[0][0],destination_position[0][1])
+        
+    #thread.start_new_thread(route_sample,(hsv, ))
     
     #route_sample()
-    #bot_route(frame)
+    bot_route(frame)
     k=0
     while(1):
         ret,frame=cap.read()
@@ -510,17 +538,20 @@ if __name__ == "__main__":
 
         destination_x,destination_y = get_coordinate(destination_position[0][0],destination_position[0][1])
         rear_bot_x,rear_bot_y=get_coordinate(Bot_position[0][0],Bot_position[0][1])
+        front_bot_x,front_bot_y=get_coordinate(Bot_position[1][0],Bot_position[1][1])
+
       
         #bot_route(frame)
 
         route_path_draw(frame)
 
-        grid_draw (frame,grid_line_x,grid_line_y)
+        #grid_draw (frame,grid_line_x,grid_line_y)
 
         bot_traverse(route_path,grid_end,frame)
-        '''if(orientmove(destination_slope,bot_slope,rear_bot_x,rear_bot_y,destination_x,destination_y,distance_centre2destination,distance_other2destination)==1):
+        
+        '''if(orientmove(destination_slope,bot_slope,front_bot_x,front_bot_y,destination_x,destination_y,distance_centre2destination,distance_other2destination)==1):
            ser.write('\xfd')
-           break '''
+           break''' 
         
         #orientmove(destination_slope,bot_slope,Bot_position[0][0],Bot_position[0][1],destination_position[0][0],destination_position[0][1],distance_centre2destination,distance_other2destination)
 
