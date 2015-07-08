@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Slave Bot", "Slave Bot\Slave Bot.cproj", "{EC43932B-B432-4454-894E-07A2665005D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC43932B-B432-4454-894E-07A2665005D0}.Debug|AVR.ActiveCfg = Debug|AVR
+		{EC43932B-B432-4454-894E-07A2665005D0}.Debug|AVR.Build.0 = Debug|AVR
+		{EC43932B-B432-4454-894E-07A2665005D0}.Release|AVR.ActiveCfg = Release|AVR
+		{EC43932B-B432-4454-894E-07A2665005D0}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

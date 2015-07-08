@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8</ToolchainName>
-    <ProjectGuid>{65d41509-ab8c-4a0d-85c6-a0ffed0e729d}</ProjectGuid>
+    <ProjectGuid>{445dd61c-0898-4199-a27f-3d42846a4e88}</ProjectGuid>
     <avrdevice>ATmega2560</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>GccApplication6</AssemblyName>
-    <Name>GccApplication6</Name>
-    <RootNamespace>GccApplication6</RootNamespace>
+    <AssemblyName>Master Bot</AssemblyName>
+    <Name>Master Bot</Name>
+    <RootNamespace>Master Bot</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -65,7 +65,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GccApplication6.c">
+    <Compile Include="Master Bot.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

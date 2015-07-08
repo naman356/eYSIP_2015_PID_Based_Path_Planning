@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8</ToolchainName>
-    <ProjectGuid>{0a9f47c0-709d-4e04-ac89-16992b8197c9}</ProjectGuid>
+    <ProjectGuid>{ec43932b-b432-4454-894e-07a2665005d0}</ProjectGuid>
     <avrdevice>ATmega2560</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>13C_Serial_Communication_ZigBee_wireless</AssemblyName>
-    <Name>13C_Serial_Communication_ZigBee_wireless</Name>
-    <RootNamespace>13C_Serial_Communication_ZigBee_wireless</RootNamespace>
+    <AssemblyName>Slave Bot</AssemblyName>
+    <Name>Slave Bot</Name>
+    <RootNamespace>Slave Bot</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -65,7 +65,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="13C_Serial_Communication_ZigBee_wireless.c">
+    <Compile Include="Slave Bot.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
