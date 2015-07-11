@@ -1,0 +1,12 @@
+\contentsline {chapter}{\numberline {1}Abstract}{2}
+\contentsline {chapter}{\numberline {2}Objective of the work}{3}
+\contentsline {chapter}{\numberline {3}Completion}{5}
+\contentsline {section}{\numberline {3.1}Requirement}{5}
+\contentsline {section}{\numberline {3.2}Task 2 - Develop a code for FireBird movement}{6}
+\contentsline {section}{\numberline {3.3}Task 3 - Creation of a depth map of room using Kinect}{7}
+\contentsline {section}{\numberline {3.4}Task - 4: Decison making about exiting the room based on depth map}{11}
+\contentsline {chapter}{\numberline {4}Result and discussion:}{16}
+\contentsline {section}{\numberline {4.1}Weighing of probabilities:}{16}
+\contentsline {chapter}{\numberline {5}Issues}{18}
+\contentsline {chapter}{\numberline {6}Future Work}{19}
+\contentsline {chapter}{\numberline {7}References}{20}
