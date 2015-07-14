@@ -157,7 +157,9 @@
 	
 	\pagebreak
 	
-	
+	\begin{center}
+		\textbf{\Huge Task 1} \\
+	\end{center}
 	\begin{center}
 		\textbf{\huge Tools Required} \\
 	\end{center}
@@ -344,10 +346,69 @@
 	
 	\pagebreak
 	
+	\begin{center}
+		\textbf{\Huge Task 2} \\
+	\end{center}
+	\begin{center}
+		\textbf{\huge Xbee configration} \\
+	\end{center}
+	\textbf{\large Communication}: \\
+	The host computer communicates with the Fire Bird V robot serially using IEEE 802.15.4 standard based 2.4 GHz XBee wireless module. Serial communication is done using asynchronous mode. In this mode, the common clock signal is not required at both the transmitter and receiver for data synchronization. 
+	ATmega 2560 has four USART ports available for serial communication, one of the port is Zigbee Wireless Com port on UART0. \\
 	
+	\textbf{\large Function used in Serial Communication using Zigbee module} \\
+	
+	\textbf{\large Function to configure UART0} \\
+	//Function To Initialize UART0  \\
+	// desired baud rate:9600  \\
+	// actual baud rate:9600 (error 0.0%)  \\
+	// char size: 8 bit  \\
+	// parity: Disabled  \\
+	void uart0 init(void)  \\
+	{  \\
+		UCSR0B = 0x00; //disable while setting baud rate  \\
+		UCSR0A = 0x00;  \\
+		UCSR0C = 0x06;  \\
+		UBRR0L = 0x5F; //set baud rate lo  \\
+		UBRR0H = 0x00; //set baud rate hi  \\
+		UCSR0B = 0x98;  \\
+	}  \\ \\
+	Function to initialize UART0 port \\
+	void init devices() \\
+	{ \\
+		cli(); //Clears the global interrupts \\
+		port init();  //Initializes all the ports \\
+		uart0 init(); //Initailize UART0 for serial communiaction \\
+		sei();   //Enables the global interrupts \\
+	}  \\
+	
+	\pagebreak
+	
+	\textbf{\large Zigbee interfacing with Fire Bird V robot} \\
+	\begin{center}
+			\includegraphics[scale = 1]{graphics/xbee4.png}\\		
+	\end{center}
+	
+	\textbf{\large Zigbee interfacing with the host computer} \\
+	XBee USB wireless adaptor board is used for interfacing XBee wireless module with the host PC.The XBee wireless Module is designed to mount into a receptacle (socket).\\ \\
+	\includegraphics[scale = 1]{graphics/xbee2.png}
+	\includegraphics[scale = 1]{graphics/xbee5.png}\\
+	
+	\pagebreak
+	XBee USB wireless adapter uses FT232 USB to serial converter to interface XBee module	with the PC’s USB port.
+	
+	\textbf{\large Connection of XBee Adapter and Fire Bird V with PC} \\
+	
+	\includegraphics[scale = 0.5]{graphics/xbee1.png}\\
+	
+	\textbf{\large Block Diagram}
+	\includegraphics[scale = 0.7]{graphics/xbee.png}\\
+	
+	\pagebreak
 	\begin{center}
 		\textbf{\huge Algorithm} \\
 	\end{center}
+	
 	
 	\begin{itemize}
 		\item First we fixed a web cam on the roof at least 8 feet height and created a boundary which is covered by webcam. Now webcam is initialized to capture the video of the floor, for this OpenCV video capture function is used. Then we read frames from video at every interval of 1/80 sec so that we can get 10-12 frames per second for image processing. 
@@ -394,7 +455,9 @@
 	
 	\pagebreak	
 	
-	
+	\begin{center}
+		\textbf{\Huge Task 3} \\
+	\end{center}
 	\begin{center}
 		\textbf{\huge Implementation} \\
 	\end{center}
@@ -477,8 +540,10 @@
 	
 	\pagebreak
 	
-	
-	\textbf{Motion of Bot}:
+	\begin{center}
+		\textbf{\Huge Task 4} \\
+	\end{center}
+	\textbf{Motion of Bot controlled using PID controller}:
 	
 	For control of movement of Slave bot the angle theta shown in figure is fed to the PID controller.
 	
