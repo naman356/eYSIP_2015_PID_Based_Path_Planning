@@ -57,7 +57,7 @@
 				\emph{Mentor:} \\
 			\end{flushright}
 			\begin{flushright}
-				{\large Amiraj Dhawan\\} 
+				{\large Amiraj Dhawan} \\ amirajdhawan@gmail.com \\ 9920678775
 			\end{flushright}
 		\end{minipage}\\[2cm]
 		
@@ -82,7 +82,7 @@
 		\vfill % Fill the rest of the page with whitespace
 		
 	\end{titlepage}
-
+	
 	
 	\begin{quote}
 		\centering \textbf{\Huge Contents} \\ 
@@ -106,13 +106,13 @@
 	\end{center}
 	Title of the project “PID based Path Planning” suggest moving of Firebird V robot using Proportional-Integral-Derivative (PID) controller. Here we are controlling the robot’s motion using a PID based closed loop feedback system. We will discuss the effect of each of the PID parameters and demonstrate how to use a PID controller to improve the system performance. \\
 	
-	To understand the working of PID we first implemented it on White Line Follower using 7-white-line-sensor-strip and then applied it's implementation in Image Processing to control the firebird using video streaming taken from webcam on a host PC and then command the firbird using xbee serial communication to follow a path to a movable destination point containing various obstacles in between them. \\
+	To understand the working of PID we first implemented it on White Line follower using 7-white-line-sensor-strip and then applied it's implementation in Image Processing to control the Fire Bird V using video streaming taken from webcam on a host PC and then command the Fire Bird V using xbee serial communication to follow a path to a movable destination point containing various obstacles in between them. \\
 	
 	\begin{center}
 		{\huge \textbf{Objective of the work}\par}
 	\end{center}
-		The aim of the project is to detect Firebird Robot V using Image Processing in an arena containing  Obstacle and a given movable end location, Plan the Robot’s Motion using PID closed loop feedback system.. \\
-		
+	The aim of the project is to detect Fire Bird V using Image Processing in an arena containing  obstacle and a given movable end location, Plan the Robot’s motion using PID closed loop feedback system.\\
+	
 	
 	\begin{tabular}{ | c | c | c |}
 		\hline
@@ -126,9 +126,9 @@
 		\hline
 		4.) & Learning Python programming, OpenCV ,Xbee serial communication& 4 days \\
 		\hline
-		5.) & Develop Motion Commands and communication between firebird V and laptop & 2 days \\ 
+		5.) & Develop Motion Commands and communication between Fire Bird V and laptop & 2 days \\ 
 		\hline
-		6.) & Detection of Firebird V using image processing & 2 days \\ 
+		6.) & Detection of Fire Bird V using image processing & 2 days \\ 
 		\hline
 		7.) & Map the path for moving destination point with avoiding walls & 5 days \\ 
 		\hline
@@ -147,13 +147,13 @@
 	
 	
 	\begin{center}
-			{\huge \textbf{Completion}\par}
+		{\huge \textbf{Completion}\par}
 	\end{center}
 	
 	\begin{enumerate}
-	 \item Developed and tuned the PID Controller for White Line Follower. \\
-	 \item Slave bot is successfully detected and controlled using Image Processing. \\
-	 \item Slave robot followed manually controlled Master robot with avoiding walls of green color. \\
+		\item Developed and tuned the PID Controller for White Line Follower. \\
+		\item Slave bot is successfully detected and controlled using Image Processing. \\
+		\item Slave robot followed manually controlled Master robot with avoiding walls of green color. \\
 	\end{enumerate}
 	
 	% \pagebreak
@@ -162,137 +162,137 @@
 	\begin{center}
 		{\huge\textbf{Requirement}\par}
 	\end{center}
-
+	
 	\begin{itemize}
 		\item \textbf{Atmel Studio 6.0}: For embedded C programming. 
 		\item \textbf{Python 2.7}: Python 2.7 IDLE is used for python programming. 
-		\item \textbf{openCV}: This library provides various modules which are used for processing an image. Color 	masking, Contours detection etc, are done by it.
-		\item \textbf{numpy}: numpy used to handle array in python
+		\item \textbf{OpenCV}: This library provides various modules which are used for processing an image. Color masking, Contours detection etc, are done by it.
+		\item \textbf{Numpy}: Numpy is used to handle array in python
 		\item \textbf{X-CTU}: For configuration of xbee modules to send motion commands from laptop to fire bird
 		\item \textbf{pyserial}: To send command using xbee serial communication through python.
 	\end{itemize}
-		
+	
 	\pagebreak	
 	
-		
+	
 	\begin{center}
 		{\huge\textbf{Implementation}\par}
 	\end{center}
 	
-	{\Large \textbf{Task 1 - Learning Firebird V programming, PID controller}\par} 
+	{\Large \textbf{Task 1 - Learning Fire Bird V programming, PID controller}\par} 
 	\begin{itemize}
-		\item Learned Fire bird V programming through Tutorial provided with kit \item For study of PID controller followed these links: \\
-		 control of mobile robots from 
-		 http://www.coursera.org/course/conrob\\
-		 and\\
-		 http://www.robotix.in/tutorials/categ/avr/pid\\
+		\item Learned Fire Bird V programming through Tutorial provided with kit \item For study of PID controller followed these links: \\
+		control of mobile robots from 
+		http://www.coursera.org/course/conrob\\
+		and\\
+		http://www.robotix.in/tutorials/categ/avr/pid\\
 	\end{itemize}
 	
-		
+	
 	{\Large \textbf{Task 2 - Develop PID controller for white line follower}\par}
 	\begin{itemize}
 		
 		\item To develop a PID controller for white line follower first we use three white line sensor strip, but it didn't workout. \\
-		\item Then we used 7 white line sensor strip to follow the line, for that we need to connect a jumper at J4 and intialise port spi pin configuration to 4 White Line sensors are connected at slave microcontroller on ATMEGA 8. \\
+		\item Then we used 7 white line sensor strip to follow the line, for that we need to connect a jumper at J4 and initialize port spi pin configuration to 4 White Line sensors are connected at slave micro controller on ATMEGA 8. \\
 		\item From Left to Right each sensor is given weight of -3 to 3. Reading of each sensors is multiplied by respective weights. \\
 		\item Reading is taken from WL sensors and multiplied with weight and sum is fed to PID controller to Process it's mechanism and return the correction value which in the end is added to the motor speed to control the Firebird to be on white line.\\
-	
+		
 	\end{itemize}
 	
 	
 	{\Large \textbf{Task 3 - Tune PID controller for white line follower}\par}
 	\begin{itemize}
 		
-		\item We Mapped the correction value to the range of 0 to 255 as the Firebird can achieve max speed of 255(reference) only. \\
+		\item We Mapped the correction value to the range of 0 to 255 as the Fire Bird V can achieve max speed of 255(reference) only. \\
 		\item To tune the PID controller created for white line We changed the Kp, Ki, and Kd values. \\
-		\item For simpicity xbee is interfaced with the fire bird for changing value of P, I, and D by 0.1 to see the effect of these values for PID controllor tuning. \\
+		\item For simplicity xbee is interfaced with the Fire Bird V for changing value of P, I, and D by 0.1 to see the effect of these values for PID controller tuning. \\
 		\item To get a proper method for tuning tried Ziegler–Nichols to tune pid.\\
-			- For proper tuning we started with Proportional P (I, D are 0) and followed 
-			  a white line.\\
-			- Then introduced Derivative D (I is 0) to improve the response time.\\
-		    - And finally added Integral I to get a better settling time.\\
-	    \item Successfully ran fire bird V on white line having curves and right angle path in it.\\ \\
-    
-   	\end{itemize}
-   	
-   	\pagebreak
-   	
-   	
+		- For proper tuning we started with Proportional P (I, D are 0) and followed a white line.\\
+		- Then introduced Derivative D (I is 0) to improve the response time.\\
+		- And finally added Integral I to get a better settling time.\\
+		\item Successfully ran Fire Bird V on white line having curves and right angle path in it.\\ \\
+		
+	\end{itemize}
+	
+	\pagebreak
+	
+	
 	{\Large \textbf{Task 4 - Learning Python programming, OpenCV, Xbee serial Communication}}\\
 	
 	\begin{itemize}
-		 
+		
 		\item To understand Python programming followed \\
 		https://docs.python.org \\
-		\item For understanding OpenCV We followed\\
+		\item For understanding OpenCV we followed\\
 		http://docs.opencv.org \\
-		\item For serial communication we used xbee modules. There are two xbee modules one is interfaced with firebird and other to laptop. To configure xbee's we used X-CTU.\\
-	
+		\item For serial communication we used xbee modules. There are two xbee modules one is interfaced with Fire Bird and other to laptop. To configure xbee's we used X-CTU.\\
+		
 	\end{itemize}	
-	 
-	{\Large \textbf{Task - 5: Develop Motion Commands and communication between firebird V and Laptop}} \\
 	
-		\begin{itemize}
-			
-		\item In this task we installed pyserial to communicate with fire bird V and python serial library is imported. 
-		\item We sent hex code of 8,6,4,2 and 5 from host device via serial xbee communication using python and recieved by Firebird V programmed in embedded C. 
+	{\Large \textbf{Task - 5: Develop Motion Commands and communication between Fire Bird V and Laptop}} \\
+	
+	\begin{itemize}
+		
+		\item In this task we installed pyserial to communicate with Fire Bird V and python serial library is imported. 
+		\item We sent hex code of 8, 6, 4, 2 and 5 from host device via serial xbee communication using python and received by Fire Bird V programmed in embedded C. 
 		\item Using hex code of 8 Bot moves forward, for 6 right, for 4 left, 2 for back and 5 for stop.\\
+		
+	\end{itemize} 
 	
-		\end{itemize} 
-		
 	{\Large \textbf{Task - 6: Detection of Firebird V using Image Processing}} \\
-		\begin{itemize}
-			
-		\item To detect bot we placed markers on it using Pink and sky blue color. 
-		\item Video straming feedback taken from cam in RGB format is converted into HSV format.
-		\item Mask the color on bot and store the Centroid of masked Contour. \\
+	\begin{itemize}
 		
-		\end{itemize}
+		\item To detect bot we placed markers on it of Pink and sky blue color. 
+		\item Video steaming feedback taken from webcam in RGB format is converted into HSV format.
+		\item Mask the color on bot and store the centroid of masked Contour. \\
 		
+	\end{itemize}
+	
 	{\Large \textbf{Task - 7: Map path for moving destination point while avoiding walls}} \\
 	
-		\begin{itemize}
-			
-		\item To map the Path from source to destination point, image(video frames) is converted into 30*30 grid. \item Map Fire bird V Markers and walls in grid. 
-		\item Path from Source to Destination mapped using Heapq algorithm for maze solving.
-		\item Path is drawn after connecting all two successive grid coordinates returned by Heapq Algorithm.\\
+	\begin{itemize}
 		
-		\end{itemize}
+		\item To map the Path from source to destination point, image(video frames) is converted into 30*30 grid. 
+		\item Map Fire bird V Markers and walls in grid. 
+		\item Path from Source to Destination mapped using Heap queue algorithm for maze solving.
+		\item Path is drawn after connecting all two successive grid coordinates returned by Heap queue Algorithm.\\
 		
-	{\Large \textbf{Task - 8: Develop the PID controller for movement of fire bird V on Mapped path}} \\
-		
-		\begin{itemize}
+	\end{itemize}
+	
+	{\Large \textbf{Task - 8: Develop the PID controller for movement of Fire Bird V on Mapped path}} \\
+	
+	\begin{itemize}
 		
 		\item Here We Created a PID controller for following path. 
-		\item The input of the PID controller is the angle for slave Bot's rear markers and path mapped. 
+		\item The input of the PID controller is the angle for line formed via slave Bot's markers and path mapped. 
 		\item If slave bot's front marker is in left of path, error is negative and PID controller process on this error and controls the bot motor speed to be in path and vice versa for positive errors.\\
 		
-		\end{itemize}
-		
+	\end{itemize}
+	
 	{\Large \textbf{Task - 9: Tune the pid controller for smoother movement}} \\
 	
-		\begin{itemize}
-			
-		\item The experience we gained in tuning PID Controller for White Line Follower is applied here. 
-		\item Slave bot successfully smoothly followed the moving master bot while avoiding walls.\\
-	
-		\end{itemize}
+	\begin{itemize}
 		
+		\item The experience we gained in tuning PID Controller for White Line Follower is applied here. 
+		\item Slave bot successfully and smoothly followed the moving master bot while avoiding walls.\\
+		
+	\end{itemize}
+	
 	{\Large \textbf{Task - 10: Testing the movements with different walls configuration}} \\
 	
 	\begin{itemize}
-			
+		
 		\item To test the movement of bot we tried a lot of configuration of walls and bot is following the mapped path smoothly and accurately while avoiding walls. \\
-
+		
 	\end{itemize}
 	
 	{\Large \textbf{Task - 11: Tutorials and documentation of code}} \\
-
+	
 	\begin{itemize}
 		
 		\item Tutorials are created on PID based White Line Follower.
 		\item Documentation is done for Image Processing based path planning  .
-	
+		
 	\end{itemize}
 	
 	\pagebreak
@@ -310,7 +310,7 @@
 		\item Using Image Processing and serial communication we controlled slave bot to follow a moving master bot while avoiding obstacles. 
 		\item In image processing masking a color is tough task as the contrast changes for image and video taken on different lightening condition, so we only worked with video streaming. 
 		\item To overcome with the problem of masking we tried variable masking but it didn't workout well. 
-		\item Path mapping based on grid map is creating problem in avoding walls, we need to dilate walls size to overcome the problem of bumping the bot with walls which is not a good practice. 
+		\item Path mapping based on grid map is creating problem in avoiding walls, we need to dilate walls size to overcome the problem of bumping the bot with walls, which is not a good practice. 
 		\item It can be improvised using local path and then global path planning.
 		
 	\end{itemize}
@@ -328,10 +328,10 @@
 			\item Installation of Ubuntu.
 			\item Finding a Error value for PID controller.
 			\item We got many problems in using PID controller for White Line Follower while turning the bot in semicircle and at angles.
-			\item Mapping Error to the motor speed in Image Processing part.
-			\item Calibration of 7 White Line sensor with master microcontroller.
+			\item Mapping error with the motor speed in Image Processing part.
+			\item Calibration of 7 White Line sensor with master micro controller.
 			\item Masking Color with varying lighting condition.
-			\item Check for the orientation of Slave bot in arena.
+			\item Checking the orientation of Slave bot in arena respective to the path.
 		\end{enumerate}
 	\end{itemize}
 	
@@ -343,7 +343,7 @@
 	\end{center}
 	
 	\begin{itemize}
-	
+		
 		\item http://www.coursera.org/course/conrob
 		\item http://www.robotix.in/tutorials/categ/avr/pid
 		\item https://docs.python.org
@@ -351,7 +351,7 @@
 		\item https://www.pololu.com
 		\item https://en.wikipedia.org/wiki/Ziegler–Nichols method
 		\item http://stackoverflow.com/
-	
+		
 	\end{itemize}
 	
 \end{document}
